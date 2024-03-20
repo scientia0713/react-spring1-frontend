@@ -13,6 +13,7 @@ export const QuizPage = () => {
     const[selectedAnswer , setSelectedAnswer] = useState(null);
     const[isCorrect , setIsCorrect] = useState(null);
 
+    //サーバーに接続し、データを取得
     const fetchData = async () => {
         const response = await fetch("http://localhost:8080/player",{method:"GET"});
         const players = await response.json();
@@ -20,6 +21,7 @@ export const QuizPage = () => {
         return players;  
     }
 
+    //選択肢の順番をランダムに入れ替える
     const arrayShuffle = (array) => {
         for(let i = (array.length -1); 0 < i ; i--){
             let r = Math.floor(Math.random() * (i + 1));
@@ -31,6 +33,7 @@ export const QuizPage = () => {
         return array;
     }
     
+    //問題と選択肢をペアにしてクイズを作成する
     const arrayCreate = (players) => {
         const questionArray = players.map((player) => {return player.question;});
         const answerArray = players.map((player) => {return player.answer;});
@@ -85,12 +88,15 @@ export const QuizPage = () => {
         setQuizArray(quizArray);
     }
 
+    //サーバーからのデータロードが終了していたらクイズを作成する
     if(isLoading){
         allQuiz();
     };
 
+    //回答ボタン押下時の制御
     const handleSubmit = () => {
         if(selectedAnswer === null){
+            alert('回答が選択されていません');
             return;
         }
 
@@ -98,6 +104,7 @@ export const QuizPage = () => {
 
     };
 
+    //次の問題へボタン押下時の制御
     const handleNextQuestion = () => {
         if(currentQuestion === quizArray.length - 1){
             return;
