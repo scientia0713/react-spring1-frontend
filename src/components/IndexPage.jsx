@@ -5,20 +5,19 @@ import { Link , Outlet } from "react-router-dom";
 export const IndexPage = () => {
 
     const[players , setPlayers] = useState([]);
-    // const[isLoading , setIsLoading] = useState(true);
-    // const[questionArray , setQuestionArray] = useState([]);
+    const[isLoading , setIsLoading] = useState(true);
 
     useEffect(() =>{
         fetch("http://localhost:8080/player",{method:"GET"})
         .then((res) => res.json())
         .then((data) => setPlayers(data))
+        .then(setIsLoading(false))
     } , []);
     
     const questionArray = players.map((player) => {return player.question;});
 
-    console.log(questionArray);
-
     return(
+        <div>{isLoading ? <p>Loading...</p> : 
         <>
             <ul>{
             questionArray.map((question) => (
@@ -27,6 +26,7 @@ export const IndexPage = () => {
             ))}</ul>
             <hr />
             <Outlet />
-        </>
+        </>}
+        </div>
     )
 }

@@ -19,6 +19,17 @@ export const QuizPage = () => {
         setIsLoading(false);
         return players;  
     }
+
+    const arrayShuffle = (array) => {
+        for(let i = (array.length -1); 0 < i ; i--){
+            let r = Math.floor(Math.random() * (i + 1));
+
+            let temp = array[i];
+            array[i] = array[r];
+            array[r] = temp;
+        }
+        return array;
+    }
     
     const arrayCreate = (players) => {
         const questionArray = players.map((player) => {return player.question;});
@@ -31,7 +42,7 @@ export const QuizPage = () => {
 
         for(let i = 0; i < questionArray.length; i++){
             const quizObj = {};
-            const choiceArray = [];
+            let choiceArray = [];
             for(let j = 0; j < 4; j++){
                 const choiceObj = {};
                 switch(j){
@@ -60,7 +71,8 @@ export const QuizPage = () => {
                 }
             }
             quizObj.question = questionArray[i];
-            quizObj.choices = choiceArray
+            choiceArray = arrayShuffle(choiceArray);
+            quizObj.choices = choiceArray;
             quizArray.push(quizObj);
         }
 
