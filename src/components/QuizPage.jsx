@@ -12,6 +12,10 @@ export const QuizPage = () => {
     const[currentQuestion , setCurrentQuestion] = useState(0);
     const[selectedAnswer , setSelectedAnswer] = useState(null);
     const[isCorrect , setIsCorrect] = useState(null);
+    const[isLast , setIsLast] = useState(false);
+
+    //正解数表示用
+    const[correctCount , setCorrectCount] = useState(0);
 
     //サーバーに接続し、データを取得
     const fetchData = async () => {
@@ -88,7 +92,7 @@ export const QuizPage = () => {
         setQuizArray(quizArray);
     }
 
-    //サーバーからのデータロードが終了していたらクイズを作成する
+    //サーバー接続処理を起動
     if(isLoading){
         allQuiz();
     };
@@ -101,12 +105,15 @@ export const QuizPage = () => {
         }
 
         setIsCorrect(quizArray[currentQuestion].choices[selectedAnswer].correct);
-
     };
 
     //次の問題へボタン押下時の制御
     const handleNextQuestion = () => {
+        if(isCorrect){
+            setCorrectCount(correctCount + 1);
+        }
         if(currentQuestion === quizArray.length - 1){
+            setIsLast(true);
             return;
         }
 
@@ -115,6 +122,11 @@ export const QuizPage = () => {
         setIsCorrect(null);
     };
 
+    //最初に戻るボタン押下時の制御
+    const handleReturnToStart = () => {
+        setCurrentQuestion(0);
+    }
+    
     return(
         <div>{isLoading ? <p>Loading...</p> : <><p>{quizArray[currentQuestion].question}のは？</p>
         {quizArray[currentQuestion].choices.map((choice , index) => (
@@ -132,9 +144,16 @@ export const QuizPage = () => {
         {isCorrect !== null &&(
             <p>{isCorrect ? '正解' : '不正解'}</p>
         )}
-        {isCorrect !== null && (
+        {isCorrect !== null && !isLast && (
             <button onClick={handleNextQuestion}>次の問題へ</button>
-        )}</>} 
+        )}
+        {isLast && (
+            <div>
+                <p>正解数は{correctCount}</p>
+                <button onClick={handleReturnToStart}>最初に戻る</button>
+            </div>
+        )}
+        </>} 
         </div>
     );
 }
