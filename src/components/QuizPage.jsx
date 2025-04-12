@@ -87,8 +87,8 @@ export const QuizPage = () => {
     }
 
     const allQuiz = async () => {
-        const playsers = await fetchData();
-        const quizArray = arrayCreate(playsers);
+        const players = await fetchData();
+        const quizArray = arrayCreate(players);
         setQuizArray(quizArray);
     }
 
@@ -135,7 +135,7 @@ export const QuizPage = () => {
               id={choice.text}
               name="choice"
               value={index}
-              onChange={(e) => setSelectedAnswer(e.target.value)}
+              onChange={(e) => setSelectedAnswer(Number(e.target.value))}
               />
               <label htmlFor={choice.text}>{choice.text}</label> 
             </div>

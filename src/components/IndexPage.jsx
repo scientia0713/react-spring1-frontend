@@ -10,8 +10,14 @@ export const IndexPage = () => {
     useEffect(() =>{
         fetch("http://localhost:8080/player",{method:"GET"})
         .then((res) => res.json())
-        .then((data) => setPlayers(data))
-        .then(setIsLoading(false))
+        .then((data) => {
+            setPlayers(data);
+            setIsLoading(false);
+        })
+        .catch((error) => {
+            console.error("データの取得に失敗しました", error);
+            setIsLoading(false);
+        });
     } , []);
     
     const questionArray = players.map((player) => {return player.question;});
@@ -20,10 +26,14 @@ export const IndexPage = () => {
         <div>{isLoading ? <p>Loading...</p> : 
         <>
             <ul>{
-            questionArray.map((question) => (
-                <li><Link to="answer"
-                    state={{question:question , players}}>{question}のは？</Link></li>
-            ))}</ul>
+            questionArray.map((question , index) => (
+                <li key={index}>
+                    <Link to="answer"state={{question:question , players}}>
+                        {question}のは？
+                    </Link>
+                </li>
+            ))}
+            </ul>
             <hr />
             <Outlet />
         </>}

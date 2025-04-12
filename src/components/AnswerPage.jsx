@@ -1,9 +1,19 @@
 import React from "react";
-import { useLocation } from "react-router-dom"; 
+import { useLocation , useNavigate } from "react-router-dom";
 
 export const AnswerPage = () => {
 
-    const { question , players } = useLocation().state;
+    //ガード処理の実装
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    if(!location.state){
+        alert("不正なアクセスです。");
+        navigate("/");
+        return null;
+    }
+
+    const { question , players } = location.state;
 
     const questionArray = players.map((player) =>{
         return player.question;

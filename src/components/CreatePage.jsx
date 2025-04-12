@@ -20,14 +20,14 @@ export const CreatePage = () => {
             dammy1,
             dammy2,
             dammy3,
-        }).then(
-            setQuestion(""),
-            setAnswer(""),
-            setDammy1(""),
-            setDammy2(""),
-            setDammy3(""),
-            setIsRegister(true),
-        )
+        }).then(() => {
+            setQuestion("");
+            setAnswer("");
+            setDammy1("");
+            setDammy2("");
+            setDammy3("");
+            setIsRegister(true);
+        })
         .catch((err) => {
             console.error(err);
         });
