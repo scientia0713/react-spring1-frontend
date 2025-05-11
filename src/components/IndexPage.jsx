@@ -28,7 +28,7 @@ export const IndexPage = () => {
             <ul>{
             questionArray.map((question , index) => (
                 <li key={index}>
-                    <Link to="answer"state={{question:question , players}}>
+                    <Link to="answer" state={{question:question , players}}>
                         {question}のは？
                     </Link>
                 </li>
